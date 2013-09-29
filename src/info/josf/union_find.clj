@@ -13,6 +13,7 @@
 
 ;; quick union
 ;;
+;; this is the naive approach
 
 
 (defn qu-root [conns x]
@@ -29,6 +30,12 @@
 
 
 ;; weighted quick union
+;;
+;; Sedgewick uses a separate array of the same length to keep track of
+;; tree depth, but I thought it would be simpler to use subarrays
+;; instead. Intuitively, it seems cheaper to look up the weight in a
+;; two-member array than in a second, potentially huge array.
+
 (defn quw-init-conn [n]
   (vec (for [x (range n)] [x 1])))
 
@@ -58,6 +65,11 @@
     (assoc conns p [new-root weight])))
 
 ;; with path compression
+;;
+;; This is incomplete. Sedgewick reassigns roots at the same time he
+;; checks for parents, grand-parents etc. This doesn't seem very
+;; functional, so I'm still looking for something better.
+
 (defn qupc-root
   ([conns x] (qupc-root x nil))
   ([conns x prev]
